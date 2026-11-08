@@ -1,0 +1,75 @@
+diff --git a/modules/optee.mk b/modules/optee.mk
+index 68196cc..f38e754 100644
+--- a/modules/optee.mk
++++ b/modules/optee.mk
+@@ -57,10 +57,15 @@ endif
+ 
+ else
+ 
++ifeq ($(strip $(PRODUCT_USE_SOFTWARE_KEYMINT)),true)
+ PRODUCT_PACKAGES += \
+-    android.hardware.keymaster@4.0-service \
+-    android.hardware.gatekeeper@1.0-service.software
+-
++    android.hardware.gatekeeper-service.panther-software \
++    android.hardware.security.keymint-service
++else
++PRODUCT_PACKAGES += \
++    android.hardware.gatekeeper@1.0-service.software \
++    android.hardware.keymaster@4.0-service
+ DEVICE_MANIFEST_FILE += device/rockchip/common/manifests/android.hardware.keymaster@4.0-service.xml
++endif
+ 
+ endif
+diff --git a/profiles/Android.bp b/profiles/Android.bp
+index 768343b..ad408e5 100644
+--- a/profiles/Android.bp
++++ b/profiles/Android.bp
+@@ -1,3 +1,11 @@
++soong_config_module_type {
++    name: "rockchip_cgroup_profiles_prebuilt",
++    module_type: "prebuilt_etc",
++    config_namespace: "rockchip",
++    bool_variables: ["panther_use_uclamp_profiles"],
++    properties: ["src"],
++}
++
+ // Copyright 2022 Rockchip Limited
+ //
+ // Licensed under the Apache License, Version 2.0 (the "License");
+@@ -12,19 +20,29 @@
+ // See the License for the specific language governing permissions and
+ // limitations under the License.
+ 
+-prebuilt_etc {
++rockchip_cgroup_profiles_prebuilt {
+     name: "vendor_cgroups.json",
+-    src: "cgroups.json",
++    soong_config_variables: {
++        panther_use_uclamp_profiles: {
++            src: "cgroups_uclamp.json",
++            conditions_default: { src: "cgroups.json" },
++        },
++    },
+     vendor: true,
+-    filename_from_src: true,
++    filename: "cgroups.json",
+     required: [
+         "vendor_task_profiles.json",
+     ],
+ }
+ 
+-prebuilt_etc {
++rockchip_cgroup_profiles_prebuilt {
+     name: "vendor_task_profiles.json",
+-    src: "task_profiles.json",
+-    filename_from_src: true,
++    soong_config_variables: {
++        panther_use_uclamp_profiles: {
++            src: "task_profiles_uclamp.json",
++            conditions_default: { src: "task_profiles.json" },
++        },
++    },
++    filename: "task_profiles.json",
+     vendor: true,
+ }

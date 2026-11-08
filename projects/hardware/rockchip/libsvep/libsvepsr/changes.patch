@@ -1,0 +1,38 @@
+diff --git a/Android.bp b/Android.bp
+index 07aa2c3..13f0265 100644
+--- a/Android.bp
++++ b/Android.bp
+@@ -30,6 +30,12 @@ cc_libsvepsr_prebuilt_library_shared {
+ 
+     required: [
+         "SrOsd.ttf",
+-        "vendor-storage-test",
++        "vendorstorage_test",
+     ],
+-}
+\ No newline at end of file
++}
++// Same SDK font formerly declared only by the conditional legacy Make file.
++prebuilt_etc {
++    name: "SrOsd.ttf",
++    src: "resources/osd/SrOsd.ttf",
++    vendor: true,
++}
+diff --git a/Android.mk b/Android.mk
+index d82d640..d541746 100644
+--- a/Android.mk
++++ b/Android.mk
+@@ -40,12 +40,7 @@ endif
+ ifeq ($(strip $(BOARD_USES_LIBSVEP_SR)),true)
+ 
+ ## copy SrOsd.ttf /vendor/etc/
+-include $(CLEAR_VARS)
+-LOCAL_MODULE := SrOsd.ttf
+-LOCAL_PROPRIETARY_MODULE := true
+-LOCAL_MODULE_CLASS := ETC
+-LOCAL_SRC_FILES := resources/osd/SrOsd.ttf
+-include $(BUILD_PREBUILT)
++# SrOsd.ttf is declared in Android.bp.
+ 
+ subdir_makefiles=$(call first-makefiles-under,$(LOCAL_PATH))
+ $(foreach mk,$(subdir_makefiles),$(info including $(mk) ...)$(eval include $(mk)))

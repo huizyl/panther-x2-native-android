@@ -1,0 +1,12 @@
+diff --git a/libc/Android.bp b/libc/Android.bp
+index f5f5f7c..c9a4419 100644
+--- a/libc/Android.bp
++++ b/libc/Android.bp
+@@ -2068,6 +2068,7 @@ cc_library {
+         "bionic/new.cpp",
+     ],
+     name: "libstdc++",
++    vendor_available: true,
+     static_ndk_lib: true,
+     static_libs: ["libasync_safe"],
+ 

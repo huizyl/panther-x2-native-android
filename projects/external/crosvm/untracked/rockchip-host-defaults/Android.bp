@@ -1,0 +1,42 @@
+// The physical-board SDK omits the host emulator's gfxstream repository.
+// Keep the original host feature for other products; Panther uses Virgl only.
+package {
+    default_applicable_licenses: ["external_crosvm_license"],
+}
+
+soong_config_module_type {
+    name: "rockchip_host_graphics_rust_defaults",
+    module_type: "rust_defaults",
+    config_namespace: "rockchip",
+    bool_variables: ["disable_host_gfxstream"],
+    properties: ["target.host.features", "target.host.shared_libs"],
+}
+
+rockchip_host_graphics_rust_defaults {
+    name: "rockchip_crosvm_host_gfxstream",
+    soong_config_variables: {
+        disable_host_gfxstream: {
+            conditions_default: {
+                target: {
+                    host: { features: ["gfxstream"] },
+                },
+            },
+        },
+    },
+}
+
+rockchip_host_graphics_rust_defaults {
+    name: "rockchip_rutabaga_host_gfxstream",
+    soong_config_variables: {
+        disable_host_gfxstream: {
+            conditions_default: {
+                target: {
+                    host: {
+                        features: ["gfxstream"],
+                        shared_libs: ["libgfxstream_backend"],
+                    },
+                },
+            },
+        },
+    },
+}

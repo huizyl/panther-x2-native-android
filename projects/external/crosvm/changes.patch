@@ -1,0 +1,159 @@
+diff --git a/Android.bp b/Android.bp
+index b21b106..9312748 100644
+--- a/Android.bp
++++ b/Android.bp
+@@ -34,7 +34,7 @@ license {
+ 
+ rust_binary {
+     name: "crosvm",
+-    defaults: ["crosvm_inner_defaults"],
++    defaults: ["crosvm_inner_defaults", "rockchip_crosvm_host_gfxstream"],
+     host_supported: true,
+     prefer_rlib: true,
+     crate_name: "crosvm",
+@@ -117,7 +117,6 @@ rust_binary {
+     target: {
+         host: {
+             features: [
+-                "gfxstream",
+                 "gpu",
+                 "virgl_renderer_next",
+             ],
+@@ -154,7 +153,7 @@ rust_binary {
+ 
+ rust_test {
+     name: "crosvm_test_src_main",
+-    defaults: ["crosvm_inner_defaults"],
++    defaults: ["crosvm_inner_defaults", "rockchip_crosvm_host_gfxstream"],
+     host_supported: true,
+     crate_name: "crosvm",
+     cargo_env_compat: true,
+@@ -241,7 +240,6 @@ rust_test {
+     target: {
+         host: {
+             features: [
+-                "gfxstream",
+                 "gpu",
+                 "virgl_renderer_next",
+             ],
+diff --git a/devices/Android.bp b/devices/Android.bp
+index 6419fff..0f0241d 100644
+--- a/devices/Android.bp
++++ b/devices/Android.bp
+@@ -12,7 +12,7 @@ package {
+ 
+ rust_test {
+     name: "devices_test_src_lib",
+-    defaults: ["crosvm_inner_defaults"],
++    defaults: ["crosvm_inner_defaults", "rockchip_rutabaga_host_gfxstream"],
+     host_supported: true,
+     crate_name: "devices",
+     cargo_env_compat: true,
+@@ -92,7 +92,6 @@ rust_test {
+     target: {
+         host: {
+             features: [
+-                "gfxstream",
+                 "gpu",
+                 "gpu_display",
+                 "virgl_renderer",
+@@ -102,7 +101,6 @@ rust_test {
+                 "libgpu_display",
+                 "librutabaga_gfx",
+             ],
+-            shared_libs: ["libgfxstream_backend"],
+         },
+     },
+ 
+@@ -110,7 +108,7 @@ rust_test {
+ 
+ rust_test {
+     name: "devices_test_tests_irqchip_main",
+-    defaults: ["crosvm_inner_defaults"],
++    defaults: ["crosvm_inner_defaults", "rockchip_rutabaga_host_gfxstream"],
+     host_supported: true,
+     crate_name: "irqchip",
+     cargo_env_compat: true,
+@@ -191,7 +189,6 @@ rust_test {
+     target: {
+         host: {
+             features: [
+-                "gfxstream",
+                 "gpu",
+                 "gpu_display",
+                 "virgl_renderer",
+@@ -201,7 +198,6 @@ rust_test {
+                 "libgpu_display",
+                 "librutabaga_gfx",
+             ],
+-            shared_libs: ["libgfxstream_backend"],
+         },
+     },
+ 
+@@ -209,7 +205,7 @@ rust_test {
+ 
+ rust_library {
+     name: "libdevices",
+-    defaults: ["crosvm_inner_defaults"],
++    defaults: ["crosvm_inner_defaults", "rockchip_rutabaga_host_gfxstream"],
+     host_supported: true,
+     crate_name: "devices",
+     cargo_env_compat: true,
+@@ -282,7 +278,6 @@ rust_library {
+     target: {
+         host: {
+             features: [
+-                "gfxstream",
+                 "gpu",
+                 "gpu_display",
+                 "virgl_renderer",
+@@ -292,7 +287,6 @@ rust_library {
+                 "libgpu_display",
+                 "librutabaga_gfx",
+             ],
+-            shared_libs: ["libgfxstream_backend"],
+         },
+     },
+ 
+diff --git a/rutabaga_gfx/Android.bp b/rutabaga_gfx/Android.bp
+index c47d372..aaceb8f 100644
+--- a/rutabaga_gfx/Android.bp
++++ b/rutabaga_gfx/Android.bp
+@@ -12,7 +12,7 @@ package {
+ 
+ rust_library {
+     name: "librutabaga_gfx",
+-    defaults: ["crosvm_inner_defaults"],
++    defaults: ["crosvm_inner_defaults", "rockchip_rutabaga_host_gfxstream"],
+     host_supported: true,
+     crate_name: "rutabaga_gfx",
+     cargo_env_compat: true,
+@@ -36,9 +36,7 @@ rust_library {
+     proc_macros: ["libremain"],
+     target: {
+         host: {
+-            features: ["gfxstream"],
+             shared_libs: [
+-                "libgfxstream_backend",
+                 "libvirglrenderer",
+             ],
+         },
+@@ -58,7 +56,7 @@ rust_library {
+ 
+ rust_test {
+     name: "rutabaga_gfx_test_src_lib",
+-    defaults: ["crosvm_inner_defaults"],
++    defaults: ["crosvm_inner_defaults", "rockchip_rutabaga_host_gfxstream"],
+     host_supported: true,
+     crate_name: "rutabaga_gfx",
+     cargo_env_compat: true,
+@@ -87,9 +85,7 @@ rust_test {
+     proc_macros: ["libremain"],
+     target: {
+         host: {
+-            features: ["gfxstream"],
+             shared_libs: [
+-                "libgfxstream_backend",
+                 "libvirglrenderer",
+             ],
+         },

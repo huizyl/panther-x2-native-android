@@ -1,0 +1,13 @@
+diff --git a/core/Makefile b/core/Makefile
+index 529e45e..2bce79a 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -3578,7 +3578,7 @@ $(vendor_linker_config_file): $(INTERNAL_VENDORIMAGE_FILES) $(PRODUCT_VENDOR_LIN
+ 		--source $(call normalize-path-list,$(private_linker_config_fragments)) \
+ 		--output $@
+ 	$(HOST_OUT_EXECUTABLES)/conv_linker_config systemprovide --source $@ \
+-		--output $@ --value "$(STUB_LIBRARIES)" --system "$(TARGET_OUT_VENDOR)"
++		--output $@ --value "$(if $(filter rk3566_panther_x2,$(TARGET_DEVICE)),$(filter-out libstdc++.so,$(STUB_LIBRARIES)),$(STUB_LIBRARIES))" --system "$(TARGET_OUT_VENDOR)"
+ $(call define declare-0p-target,$(vendor_linker_config_file),)
+ INTERNAL_VENDORIMAGE_FILES += $(vendor_linker_config_file)
+ ALL_DEFAULT_INSTALLED_MODULES += $(vendor_linker_config_file)

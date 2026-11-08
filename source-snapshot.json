@@ -1,0 +1,420 @@
+{
+  "success": true,
+  "scanned_projects": 1234,
+  "changed_projects": [
+    {
+      "path": "bionic",
+      "base_commit": "a703d7f70d745c9303aaf981fd8a7a898fb33255",
+      "tracked_changed_files": [
+        "libc/Android.bp"
+      ],
+      "patch_bytes": 310,
+      "untracked_source_files": []
+    },
+    {
+      "path": "build/make",
+      "base_commit": "4669f81b3ffa96cf61df747ee63c001d8facd8e4",
+      "tracked_changed_files": [
+        "core/Makefile"
+      ],
+      "patch_bytes": 814,
+      "untracked_source_files": []
+    },
+    {
+      "path": "build/soong",
+      "base_commit": "47ec2dd615bb08fb8b9b76a163acf0fe6a837506",
+      "tracked_changed_files": [
+        "cmd/soong_build/main.go"
+      ],
+      "patch_bytes": 742,
+      "untracked_source_files": []
+    },
+    {
+      "path": "device/rockchip/common",
+      "base_commit": "d69a9034ac6339f483f1827cee01841e64e77ff3",
+      "tracked_changed_files": [
+        "modules/optee.mk",
+        "profiles/Android.bp"
+      ],
+      "patch_bytes": 2181,
+      "untracked_source_files": [
+        {
+          "path": "profiles/cgroups_uclamp.json",
+          "sha256": "97fe7d6cb758815a8075abfac0139fe7f11d6c30dce0b2e7da4c7d7d030fa6d0"
+        },
+        {
+          "path": "profiles/task_profiles_uclamp.json",
+          "sha256": "8cc24a93d1a227ed317ea15d3d91fc344559926c3826ab86632a52b125a8a66b"
+        }
+      ]
+    },
+    {
+      "path": "device/rockchip/rk356x",
+      "base_commit": "092ee6ba013df2de6c73a93ddb3686accf6687b7",
+      "tracked_changed_files": [
+        "AndroidProducts.mk",
+        "device.mk"
+      ],
+      "patch_bytes": 813,
+      "untracked_source_files": [
+        {
+          "path": "rk3566_panther_x2/Android.mk",
+          "sha256": "4f3781cd935f3dc032cb1957e51c7a8fcb342afa699bc29b22a0b24281261923"
+        },
+        {
+          "path": "rk3566_panther_x2/AndroidBoard.mk",
+          "sha256": "9490ace1ac42ec08a77de8b7d64bcef0794fe1e459ea75103d49034140c9ef7f"
+        },
+        {
+          "path": "rk3566_panther_x2/BoardConfig.mk",
+          "sha256": "c24a61769aa2af814ca73f0ce01178675d0edc368a69dfc8cdb93c157ffe1ccf"
+        },
+        {
+          "path": "rk3566_panther_x2/init.panther.rc",
+          "sha256": "36ec972afc65b9aa0ec7cdcc03e83c2b8ae14386df7ea393cbc2af5db9ed1ce2"
+        },
+        {
+          "path": "rk3566_panther_x2/media_profiles_default.xml",
+          "sha256": "1b35323555744b441eab024a9f5ce1e8f1142cb909cb8a472b579cd211349fa2"
+        },
+        {
+          "path": "rk3566_panther_x2/ota/loader/readme.txt",
+          "sha256": "dbb7d64a163f204d707c45d2ef98f643c1f1677a8e4d5ec6d4b04a574e96daa6"
+        },
+        {
+          "path": "rk3566_panther_x2/preinstall/Android.mk",
+          "sha256": "4413c8da30de67c3455ffd9440f84eb37119c861c4cde5993e1f1b6fbace2b8e"
+        },
+        {
+          "path": "rk3566_panther_x2/preinstall/README.txt",
+          "sha256": "4ff3f3558e47e34be0ae33e56a5fc88b4cbd3b49de49c5e48388e19c7fbccb44"
+        },
+        {
+          "path": "rk3566_panther_x2/preinstall/preinstall.mk",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "rk3566_panther_x2/preinstall_del/Android.mk",
+          "sha256": "4413c8da30de67c3455ffd9440f84eb37119c861c4cde5993e1f1b6fbace2b8e"
+        },
+        {
+          "path": "rk3566_panther_x2/preinstall_del/README.txt",
+          "sha256": "03c5ec039fd0bcd1c086ca1247129258cf7c72042dd89f07e12bcdfa8ec53273"
+        },
+        {
+          "path": "rk3566_panther_x2/preinstall_del/preinstall.mk",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "rk3566_panther_x2/preinstall_del_forever/Android.mk",
+          "sha256": "4413c8da30de67c3455ffd9440f84eb37119c861c4cde5993e1f1b6fbace2b8e"
+        },
+        {
+          "path": "rk3566_panther_x2/preinstall_del_forever/README.txt",
+          "sha256": "e827b5e471b53f7468f1e6b20985009bd7a54c0a7f5110e50801c91944dcc58c"
+        },
+        {
+          "path": "rk3566_panther_x2/preinstall_del_forever/preinstall.mk",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "rk3566_panther_x2/resolution_white.xml",
+          "sha256": "aa20cf27c2a8e4ae6fc70e74cf9c8624d507615c7b3203ef3de7972910d70a3b"
+        },
+        {
+          "path": "rk3566_panther_x2/rga-probe/probe.cpp",
+          "sha256": "2533555ad851630b83cdc775c7579d0dabf121808b7d22c1b1ff2dc33813600a"
+        },
+        {
+          "path": "rk3566_panther_x2/rk3566_panther_x2.mk",
+          "sha256": "faee04f52d117d9078c68a6d0f04704a26fd8bd39d057ba84a08659398c4d1c2"
+        },
+        {
+          "path": "rk3566_panther_x2/sepolicy/hal_gatekeeper_default.te",
+          "sha256": "ed5c0d403cde57a2f10df9727b9c5f77ac9d71e3e2be7af72b6c9cd33a73f70c"
+        },
+        {
+          "path": "rk3566_panther_x2/sepolicy/service_contexts",
+          "sha256": "0b9263c3d13caf8396a47a7220786eb21601704ee89a4b7f1e5bd2642c355937"
+        },
+        {
+          "path": "rk3566_panther_x2/sepolicy/wait_for_optee.te",
+          "sha256": "5ca0fdc314f77f66bff705fa4efc08c5eaeca292dd2807710fd80ce5dbf6d5ba"
+        },
+        {
+          "path": "rk3566_panther_x2/software-security-matrix.xml",
+          "sha256": "a30cb874d4b1ea0cc4f0192350b8ef2f9a8e5f8695ff3976a13a56bf480bb82d"
+        },
+        {
+          "path": "rk3566_panther_x2/webview-candidate/Android.bp",
+          "sha256": "acce4f63645002c6c82b12d86ef4b9a65e93ba3de30ff92da07868b7c8d892f5"
+        }
+      ]
+    },
+    {
+      "path": "external/crosvm",
+      "base_commit": "b681a75b0f32e966314aa9f90b709f1b6785b2f8",
+      "tracked_changed_files": [
+        "Android.bp",
+        "devices/Android.bp",
+        "rutabaga_gfx/Android.bp"
+      ],
+      "patch_bytes": 4524,
+      "untracked_source_files": [
+        {
+          "path": "rockchip-host-defaults/Android.bp",
+          "sha256": "482457ba4681ace1e685bb1f58223a80da816bbe4911e35661cfbfe691d23015"
+        }
+      ]
+    },
+    {
+      "path": "external/e2fsprogs",
+      "base_commit": "c8fbc42fa2cd69b344d1bcdc63d860215aa82541",
+      "tracked_changed_files": [
+        "lib/blkid/libiconv/Android.bp",
+        "misc/Android.bp"
+      ],
+      "patch_bytes": 803,
+      "untracked_source_files": []
+    },
+    {
+      "path": "external/openwrt-prebuilts",
+      "base_commit": "eccc27e898b3225cfb008483773203424697da56",
+      "tracked_changed_files": [
+        "Android.bp"
+      ],
+      "patch_bytes": 4878,
+      "untracked_source_files": []
+    },
+    {
+      "path": "hardware/interfaces",
+      "base_commit": "5ccb5de43e61745c1c99773d3b14a974bfefd323",
+      "tracked_changed_files": [],
+      "patch_bytes": 0,
+      "untracked_source_files": [
+        {
+          "path": "gatekeeper/aidl/software/Android.bp",
+          "sha256": "a2abb5a8a6cf4a965128fe4f3ef07f670c7a0f5ff1375d9c82a701b61a9db3a2"
+        },
+        {
+          "path": "gatekeeper/aidl/software/GateKeeper.cpp",
+          "sha256": "aafaa44289a0a40b0dad4f701697e65b1539949bf7b9c866f6a88afc05528851"
+        },
+        {
+          "path": "gatekeeper/aidl/software/GateKeeper.h",
+          "sha256": "6a607011c0d04073be44191371b8c17bd4d3224979185e668bb511fcee995ea5"
+        },
+        {
+          "path": "gatekeeper/aidl/software/SharedSecret.cpp",
+          "sha256": "c6ff2359c358b1d32f58b1e47845126f74a6fcb2075d555fbb962c5b55687f1f"
+        },
+        {
+          "path": "gatekeeper/aidl/software/SharedSecret.h",
+          "sha256": "3d2847df9e6f369c1cf07c8555f53fceda5327b40c58d8dc41cbfd47e5a4d2c4"
+        },
+        {
+          "path": "gatekeeper/aidl/software/SoftGateKeeper.h",
+          "sha256": "7b13f77c13ac764cdfb112010a72e0e8e59f064cab7fc66731eb703b66d51ad3"
+        },
+        {
+          "path": "gatekeeper/aidl/software/android.hardware.gatekeeper-service.nonsecure.xml",
+          "sha256": "a45f0be4ea12b2a2a8edeb3d35de8afce3b13f4af4d1203023d012be18eb1076"
+        },
+        {
+          "path": "gatekeeper/aidl/software/android.hardware.security.sharedsecret-gatekeeper.xml",
+          "sha256": "ffcb4a907ee27ded4493a5d21cb3daeeef84a04ce2e678c98624a1046c8bae5f"
+        },
+        {
+          "path": "gatekeeper/aidl/software/panther-gatekeeper.rc",
+          "sha256": "d6778d87ef19620e008c16f53988843f0d1483eff99cf854c697232e6c3fe63a"
+        },
+        {
+          "path": "gatekeeper/aidl/software/service.cpp",
+          "sha256": "9a5a9df96f8864b0b58517fee440b9266d448e469e0d8c5f8c330bdf57f1f996"
+        }
+      ]
+    },
+    {
+      "path": "hardware/rockchip/hwcomposer/drmhwc2",
+      "base_commit": "60393e9765bc7c2d5426f010666a662e4db84a61",
+      "tracked_changed_files": [
+        "include/drmplane.h",
+        "rockchip/platform/rk356x/drmvop356x.cpp"
+      ],
+      "patch_bytes": 2465,
+      "untracked_source_files": []
+    },
+    {
+      "path": "hardware/rockchip/keymaster4",
+      "base_commit": "608338679993c81fcccd378269106bf00066e58e",
+      "tracked_changed_files": [
+        "wait_for_tee/wait_for_tee.mk"
+      ],
+      "patch_bytes": 334,
+      "untracked_source_files": []
+    },
+    {
+      "path": "hardware/rockchip/libgralloc/bifrost",
+      "base_commit": "74d6d8b21829386c7d9dd2e59b9a0e9fd8bf924e",
+      "tracked_changed_files": [
+        "src/allocator/dma_buf_heaps/dma_buf_heaps.cpp"
+      ],
+      "patch_bytes": 852,
+      "untracked_source_files": []
+    },
+    {
+      "path": "hardware/rockchip/libsvep/libsvepsr",
+      "base_commit": "f6df30e07ab391e6bfeb3170b415aa54da64cd46",
+      "tracked_changed_files": [
+        "Android.bp",
+        "Android.mk"
+      ],
+      "patch_bytes": 1059,
+      "untracked_source_files": []
+    },
+    {
+      "path": "hardware/rockchip/usb/gadget",
+      "base_commit": "a1db50bd8402cb0e918778649748f99c40260c46",
+      "tracked_changed_files": [
+        "utils/MonitorFfs.cpp"
+      ],
+      "patch_bytes": 1961,
+      "untracked_source_files": []
+    },
+    {
+      "path": "kernel-6.1",
+      "base_commit": "b2d11ea3307ca36c86c8db3c8cd61a2a66d232b4",
+      "tracked_changed_files": [
+        "drivers/gpu/drm/rockchip/rockchip_drm_vvop.c"
+      ],
+      "patch_bytes": 2893,
+      "untracked_source_files": [
+        {
+          "path": "arch/arm64/boot/dts/rockchip/rk3566-panther-x2-android.dts",
+          "sha256": "fb2723e0957475a6b46c2ac532a4a9a33dc4141ac9a9c63f30645afd1ecced37"
+        },
+        {
+          "path": "arch/arm64/boot/dts/rockchip/rk3566-panther-x2-bt-only-r6.dts",
+          "sha256": "f1282c6d4ec43bec584e089affc2d377412e8a3cbaac357fb8540e73ec093aff"
+        },
+        {
+          "path": "arch/arm64/boot/dts/rockchip/rk3566-panther-x2-encoder-only.dts",
+          "sha256": "018e3248e03163c43e0484be282bd1d4904de8b0e1053b7c62b215c93c649fc9"
+        },
+        {
+          "path": "arch/arm64/boot/dts/rockchip/rk3566-panther-x2-r6-verify.dts",
+          "sha256": "63331dec69c0dca6a6a187812362cd298a43a8d066abdab4df29c07dd1a97f1b"
+        },
+        {
+          "path": "arch/arm64/boot/dts/rockchip/rk3566-panther-x2-rga-only-r6.dts",
+          "sha256": "31c9ccc7cc3f05548e8a1b573265dd467296828eb082409cf8bd3b4e28fed05a"
+        },
+        {
+          "path": "arch/arm64/boot/dts/rockchip/rk3566-panther-x2-usb-only-r6.dts",
+          "sha256": "982a833362cb315b1ab48c76f35242cefe6c292e0483ea7269e7993fcf93d3c4"
+        },
+        {
+          "path": "arch/arm64/boot/dts/rockchip/rk3566-panther-x2-wifi-only-r6.dts",
+          "sha256": "e7310cb3cc1af7665ae981bbeb06970dd9b59818ca13d8354b5db7ad31ae7834"
+        },
+        {
+          "path": "arch/arm64/configs/panther-headless.config",
+          "sha256": "c5b07faeb6d06748f0990805b88566bb7aa68d4ba000a7cd805933a5fb3d2446"
+        }
+      ]
+    },
+    {
+      "path": "packages/modules/Bluetooth",
+      "base_commit": "3e28f1d4311ce3841c60cdc1a1a98e5b7ee3c092",
+      "tracked_changed_files": [
+        "system/gd/hci/hci_layer_fake.h",
+        "system/gd/hci/le_scanning_manager.cc",
+        "system/gd/hci/le_scanning_manager_test.cc"
+      ],
+      "patch_bytes": 10692,
+      "untracked_source_files": []
+    },
+    {
+      "path": "packages/services/Car",
+      "base_commit": "d3e96db43f635b1cbbaecb2ba4ee6a9916de702d",
+      "tracked_changed_files": [
+        "cpp/evs/apps/default/Android.bp"
+      ],
+      "patch_bytes": 1513,
+      "untracked_source_files": []
+    },
+    {
+      "path": "prebuilts/sdk",
+      "base_commit": "92e2a80095695a40fa854fff44268e0bc333c154",
+      "tracked_changed_files": [],
+      "patch_bytes": 0,
+      "untracked_source_files": [
+        {
+          "path": "34/module-lib/api/framework-pdf-removed.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/module-lib/api/framework-pdf.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/module-lib/api/framework-photopicker-removed.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/module-lib/api/framework-photopicker.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/public/api/framework-pdf-removed.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/public/api/framework-pdf.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/public/api/framework-photopicker-removed.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/public/api/framework-photopicker.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/system/api/framework-pdf-removed.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/system/api/framework-pdf.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/system/api/framework-photopicker-removed.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        },
+        {
+          "path": "34/system/api/framework-photopicker.txt",
+          "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+        }
+      ]
+    },
+    {
+      "path": "system/core",
+      "base_commit": "2c6399d394163c6dcf4dbd6330fc3b6364b6888b",
+      "tracked_changed_files": [
+        "init/builtins.cpp",
+        "libsync/Android.bp"
+      ],
+      "patch_bytes": 1078,
+      "untracked_source_files": [
+        {
+          "path": "init/panther_boot_trace.h",
+          "sha256": "b133cff975c35166e65e72f926f83562defe523e10d903234b825a2c264feb8d"
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "images_or_private_keys_copied": false
+}

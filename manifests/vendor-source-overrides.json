@@ -1,0 +1,148 @@
+[
+  {
+    "old_name": "RKTools",
+    "path": "RKTools",
+    "original_revision": "7997bff501ad745e084d740b4f95a1d3960033a5",
+    "name": "RKTools",
+    "revision": "5f8e6349a0de43493e9c3b811b0fc945b870c247",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "original_revision_unavailable_using_pinned_public_branch_head"
+  },
+  {
+    "old_name": "external/camera_engine_rkaiq",
+    "path": "external/camera_engine_rkaiq",
+    "original_revision": "c70ded3587a2276595cc74f060c9b9a7a5d65181",
+    "name": "external/camera_engine_rkaiq",
+    "revision": "ff01f5aa1daf425aee27a85bec98c6c3b16d46ee",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "original_revision_unavailable_using_pinned_public_branch_head"
+  },
+  {
+    "old_name": "platform/packages/modules/Connectivity",
+    "path": "packages/modules/Connectivity",
+    "original_revision": "a490cc01af31a716dc6238e18de7713fcb855a93",
+    "name": "platform/packages/modules/Connectivity",
+    "revision": "36f1522f04f2a4fd86591e1cc56f9d20b2820de0",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "original_revision_unavailable_using_pinned_public_branch_head"
+  },
+  {
+    "old_name": "platform/packages/services/Car",
+    "path": "packages/services/Car",
+    "original_revision": "d9b2a960784399a9e6952740af6d825e4cb86c27",
+    "name": "platform/packages/services/Car",
+    "revision": "d3e96db43f635b1cbbaecb2ba4ee6a9916de702d",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "original_revision_unavailable_using_pinned_public_branch_head"
+  },
+  {
+    "old_name": "platform/prebuilts/sdk",
+    "path": "prebuilts/sdk",
+    "original_revision": "83fd7d0c59ffe0afa53501234c70aae513e2ec80",
+    "name": "platform/prebuilts/sdk",
+    "revision": "92e2a80095695a40fa854fff44268e0bc333c154",
+    "remote": "aosp_official",
+    "upstream": "refs/tags/android-14.0.0_r27",
+    "reason": "supplier_repository_empty_using_official_AOSP_tag"
+  },
+  {
+    "old_name": "platform/system/core",
+    "path": "system/core",
+    "original_revision": "f39491e53bebec79b2951514c8929dd52ec9c05f",
+    "name": "platform/system/core",
+    "revision": "2c6399d394163c6dcf4dbd6330fc3b6364b6888b",
+    "remote": "aosp_official",
+    "upstream": "refs/tags/android-14.0.0_r27",
+    "reason": "supplier_repository_empty_using_official_AOSP_tag"
+  },
+  {
+    "old_name": "rk/device/rockchip/rk3588",
+    "path": "device/rockchip/rk3588",
+    "original_revision": "13ca3eb1c4bc92987ba47983db4360a3bf719436",
+    "name": "rk/device/rockchip/rk3588",
+    "revision": "62082c1fa217313304bf23c385f7d7e5999a79a6",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "original_revision_unavailable_using_pinned_public_branch_head"
+  },
+  {
+    "old_name": "rk/hardware/rk29/camera360",
+    "path": "packages/apps/Camera360",
+    "original_revision": "7034ecc3d7929714826b30665a8216f41da77120",
+    "name": "rk/hardware/rk29/camera360",
+    "revision": "a28bb171d1e930773104f50984dd814f544ada0b",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "original_revision_unavailable_using_pinned_public_branch_head"
+  },
+  {
+    "old_name": "rk/platform/vendor/rockchip/common/common",
+    "path": "vendor/rockchip/common",
+    "original_revision": "9e19401c7cc902e2575b61a8a61f58a260e334d2",
+    "name": "rk/platform/vendor/rockchip/common",
+    "revision": "13bbb25125ce0aea9e988aaa2b31c3f8e159af30",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "original_revision_unavailable_using_pinned_public_branch_head"
+  },
+  {
+    "old_name": "rk/platform/vendor/rockchip/common/vpu",
+    "path": "vendor/rockchip/common/vpu",
+    "original_revision": "a6aa2b1e68c42f52076dc4204d44b27ca70c22ef",
+    "name": "rk/platform/vendor/rockchip/vpu",
+    "revision": "a6aa2b1e68c42f52076dc4204d44b27ca70c22ef",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "corrected_public_repository_path_preserved_original_revision"
+  },
+  {
+    "old_name": "rk/platform/vendor/rockchip/hardware/codec2",
+    "path": "vendor/rockchip/hardware/interfaces/codec2",
+    "original_revision": "607f89a1c6786e87e4276e16b94e28fe0bfb797b",
+    "name": "rk/platform/vendor/rockchip/codec2",
+    "revision": "607f89a1c6786e87e4276e16b94e28fe0bfb797b",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "corrected_public_repository_path_preserved_original_revision"
+  },
+  {
+    "old_name": "rk/platform/vendor/rockchip/hardware/hardware",
+    "path": "vendor/rockchip/hardware",
+    "original_revision": "90dfdbc85a4a2e787f1541ce1f3fc1bbb8b6b49d",
+    "name": "rk/platform/vendor/rockchip/hardware",
+    "revision": "90dfdbc85a4a2e787f1541ce1f3fc1bbb8b6b49d",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "corrected_public_repository_path_preserved_original_revision"
+  },
+  {
+    "old_name": "rk/platform/vendor/rockchip/hardware/neuralnetworks",
+    "path": "vendor/rockchip/hardware/interfaces/neuralnetworks",
+    "original_revision": "9b1003ba4420dbc7c87ce161e67190335f1ebeff",
+    "name": "rk/platform/vendor/rockchip/neuralnetworks",
+    "revision": "9b1003ba4420dbc7c87ce161e67190335f1ebeff",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "corrected_public_repository_path_preserved_original_revision"
+  },
+  {
+    "old_name": "rk/platform/vendor/rockchip/hardware/rksoundsetting",
+    "path": "vendor/rockchip/hardware/interfaces/rksoundsetting",
+    "original_revision": "b5b567d9d757091880d5036e32fc3be8f6c47ff8",
+    "name": "rk/platform/vendor/rockchip/rksoundsetting",
+    "revision": "b5b567d9d757091880d5036e32fc3be8f6c47ff8",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "corrected_public_repository_path_preserved_original_revision"
+  },
+  {
+    "old_name": "rk/platform/vendor/rockchip/hardware/rockit",
+    "path": "vendor/rockchip/hardware/interfaces/rockit",
+    "original_revision": "879ba298dbd8b53e88e9cfdcc26551e560e65c05",
+    "name": "rk/platform/vendor/rockchip/rockit",
+    "revision": "879ba298dbd8b53e88e9cfdcc26551e560e65c05",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "corrected_public_repository_path_preserved_original_revision"
+  },
+  {
+    "old_name": "rk/platform/vendor/rockchip/hardware/tv_input",
+    "path": "vendor/rockchip/hardware/interfaces/tv",
+    "original_revision": "c3b5d7742026e0d0d16a9a0790b69339f45c99ce",
+    "name": "rk/platform/vendor/rockchip/tv_input",
+    "revision": "c3b5d7742026e0d0d16a9a0790b69339f45c99ce",
+    "upstream": "refs/heads/radxa_andorid14_rkr6_u1",
+    "reason": "corrected_public_repository_path_preserved_original_revision"
+  }
+]

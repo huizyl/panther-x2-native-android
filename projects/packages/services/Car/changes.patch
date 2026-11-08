@@ -1,0 +1,47 @@
+diff --git a/cpp/evs/apps/default/Android.bp b/cpp/evs/apps/default/Android.bp
+index 2f49eeb..ca1019c 100644
+--- a/cpp/evs/apps/default/Android.bp
++++ b/cpp/evs/apps/default/Android.bp
+@@ -19,9 +19,26 @@ package {
+     default_applicable_licenses: ["Android-Apache-2.0"],
+ }
+ 
++// Public RK EVS sources reference an unavailable private 3D asset library.
++// Non-automotive boards can explicitly disable this optional camera backend.
++soong_config_module_type {
++    name: "rockchip_evs_cc_defaults",
++    module_type: "cc_defaults",
++    config_namespace: "rockchip",
++    bool_variables: ["disable_automotive_evs"],
++    properties: ["enabled"],
++}
++rockchip_evs_cc_defaults {
++    name: "rockchip_evs_optional_defaults",
++    soong_config_variables: {
++        disable_automotive_evs: { enabled: false },
++    },
++}
++
+ cc_binary {
+     name: "evs_app",
+     defaults: [
++        "rockchip_evs_optional_defaults",
+         "android.hardware.graphics.common-ndk_shared",
+         "vhalclient_defaults",
+     ],
+@@ -107,6 +124,7 @@ cc_prebuilt_library_shared {
+ 
+ cc_prebuilt_library_shared {
+ 	name: "libassimp",
++    defaults: ["rockchip_evs_optional_defaults"],
+ 	compile_multilib: "first",
+ 	srcs: ["res/rkrender/lib64/libassimp.so"],
+ 	owner: "evs_app",
+@@ -116,6 +134,7 @@ cc_prebuilt_library_shared {
+ 
+ cc_prebuilt_library_shared {
+ 	name: "lib_render_3d",
++    defaults: ["rockchip_evs_optional_defaults"],
+ 	compile_multilib: "first",
+ 	srcs: ["res/rkrender/lib64/lib_render_3d.so"],
+ 	owner: "evs_app",

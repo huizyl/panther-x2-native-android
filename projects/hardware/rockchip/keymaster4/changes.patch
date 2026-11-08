@@ -1,0 +1,8 @@
+diff --git a/wait_for_tee/wait_for_tee.mk b/wait_for_tee/wait_for_tee.mk
+index 703b59d..aab8119 100644
+--- a/wait_for_tee/wait_for_tee.mk
++++ b/wait_for_tee/wait_for_tee.mk
+@@ -1,2 +1,2 @@
+-PRODUCT_PACKAGES += wait_for_tee
++PRODUCT_PACKAGES += wait_for_optee
+ BOARD_SEPOLICY_DIRS += hardware/rockchip/keymaster4/wait_for_tee/sepolicy

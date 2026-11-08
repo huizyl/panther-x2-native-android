@@ -1,0 +1,19 @@
+diff --git a/src/allocator/dma_buf_heaps/dma_buf_heaps.cpp b/src/allocator/dma_buf_heaps/dma_buf_heaps.cpp
+index 7b2350f..edf29cc 100644
+--- a/src/allocator/dma_buf_heaps/dma_buf_heaps.cpp
++++ b/src/allocator/dma_buf_heaps/dma_buf_heaps.cpp
+@@ -165,6 +165,14 @@ static BufferAllocator *get_global_buffer_allocator()
+ 
+ static dma_buf_heap pick_dma_buf_heap(uint64_t usage)
+ {
++	// VVOP has no display IOMMU: its client target must pass DRM's
++	// contiguous DMA import check. Keep ordinary app buffers unchanged.
++	if ((usage & GRALLOC_USAGE_HW_FB) && !(usage & GRALLOC_USAGE_PROTECTED) &&
++	    property_get_bool("vendor.gralloc.contiguous_client_target", false))
++	{
++		return dma_buf_heap::physically_contiguous;
++	}
++
+ 	if ( is_alloc_all_buffers_from_cma_heap_required_via_prop() )
+ 	{
+ 		MALI_GRALLOC_LOGI("to allocate all buffer from cma_heap");

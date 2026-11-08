@@ -1,0 +1,24 @@
+diff --git a/lib/blkid/libiconv/Android.bp b/lib/blkid/libiconv/Android.bp
+index 69a02b9..25682d4 100644
+--- a/lib/blkid/libiconv/Android.bp
++++ b/lib/blkid/libiconv/Android.bp
+@@ -4,6 +4,7 @@
+ // ANDROIDMK TRANSLATION WARNING: No 'include $(CLEAR_VARS)' detected before first assignment; clearing vars now
+ cc_library {
+     name: "libiconv-1.16",
++    vendor_available: true,
+     ramdisk_available: true,
+     vendor_ramdisk_available: true,
+     recovery_available: true,
+diff --git a/misc/Android.bp b/misc/Android.bp
+index 0656bf4..a1d73b9 100644
+--- a/misc/Android.bp
++++ b/misc/Android.bp
+@@ -157,6 +157,7 @@ tune2fs_libs = [
+ cc_binary {
+     name: "tune2fs",
+     host_supported: true,
++    recovery_available: true,
+     vendor_ramdisk_available: true,
+     defaults: ["tune2fs-defaults"],
+ 

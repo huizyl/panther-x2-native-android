@@ -1,0 +1,34 @@
+// AOSP cdf6fc5424b2f1b925693a8d1bbb82f74357d7bd, vendor-partition packaging.
+// Cryptographic implementation is kept identical to the verified upstream files.
+package {
+    default_applicable_licenses: ["hardware_interfaces_license"],
+}
+
+cc_binary {
+    name: "android.hardware.gatekeeper-service.panther-software",
+    stem: "android.hardware.gatekeeper-service",
+    relative_install_path: "hw",
+    vendor: true,
+    cflags: ["-fvisibility=hidden", "-Wall", "-Werror"],
+    srcs: ["GateKeeper.cpp", "SharedSecret.cpp", "service.cpp"],
+    init_rc: ["panther-gatekeeper.rc"],
+    vintf_fragments: [
+        "android.hardware.gatekeeper-service.nonsecure.xml",
+        "android.hardware.security.sharedsecret-gatekeeper.xml",
+    ],
+    shared_libs: [
+        "android.hardware.gatekeeper-V1-ndk",
+        "android.hardware.security.sharedsecret-V1-ndk",
+        "lib_android_keymaster_keymint_utils",
+        "libbase",
+        "libbinder_ndk",
+        "libcrypto",
+        "libcutils",
+        "libgatekeeper",
+        "libhardware",
+        "libkeymaster_portable",
+        "liblog",
+        "libutils",
+    ],
+    static_libs: ["libscrypt_static"],
+}

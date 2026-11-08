@@ -1,0 +1,4 @@
+# Rockchip's helper now discovers AIDL KeyMint through servicemanager.
+# Its existing policy already grants the KeyMint client role, but omits
+# the standard binder transport and servicemanager callback permissions.
+binder_use(wait_for_optee)

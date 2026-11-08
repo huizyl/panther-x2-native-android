@@ -1,0 +1,103 @@
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vvop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vvop.c
+index 3f4432ad5..286f662a7 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vvop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vvop.c
+@@ -7,6 +7,9 @@
+ #include <linux/module.h>
+ #include <linux/component.h>
+ #include <linux/platform_device.h>
++#include <drm/drm_fourcc.h>
++#include <drm/drm_edid.h>
++#include <drm/drm_blend.h>
+ #include <drm/drm_gem.h>
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_crtc_helper.h>
+@@ -20,13 +23,13 @@
+ #define XRES_MIN	32
+ #define YRES_MIN	32
+ 
+-#define XRES_DEF	1024
+-#define YRES_DEF	768
++#define XRES_DEF	720
++#define YRES_DEF	1280
+ 
+ #define XRES_MAX	8192
+ #define YRES_MAX	8192
+ 
+-#define VVOP_MAX_CRTC	8
++#define VVOP_MAX_CRTC	1
+ 
+ static struct platform_device *vvop_pdev;
+ 
+@@ -55,6 +58,10 @@ struct vvop {
+ 
+ static const u32 vvop_formats[] = {
+ 	DRM_FORMAT_XRGB8888,
++	DRM_FORMAT_ARGB8888,
++	DRM_FORMAT_XBGR8888,
++	DRM_FORMAT_ABGR8888,
++	DRM_FORMAT_RGB565,
+ };
+ 
+ #define drm_crtc_to_vvop_crtc(crtc) \
+@@ -71,7 +78,7 @@ static const struct drm_plane_funcs vvop_plane_funcs = {
+ };
+ 
+ static void vvop_plane_atomic_update(struct drm_plane *plane,
+-				     struct drm_plane_state *old_state)
++				     struct drm_atomic_state *state)
+ {
+ }
+ 
+@@ -91,6 +98,11 @@ static int vvop_plane_init(struct drm_device *dev, struct drm_plane *primary)
+ 		return ret;
+ 
+ 	drm_plane_helper_add(primary, &vvop_plane_helper_funcs);
++	ret = drm_plane_create_zpos_property(primary, 0, 0, 0);
++	if (ret) {
++		drm_plane_cleanup(primary);
++		return ret;
++	}
+ 
+ 	return 0;
+ }
+@@ -367,9 +379,12 @@ static int vvop_conn_get_modes(struct drm_connector *connector)
+ 	int count = 0;
+ 	int i;
+ 
+-	count += drm_add_modes_noedid(connector, XRES_MAX, YRES_MAX);
+-	for (i = 0; vvop_modes_builtin[i].type != 0; i++) {
++	/* Panther headless target: one bounded 720x1280@30 scanout mode. */
++	for (i = 0; i < ARRAY_SIZE(vvop_modes_builtin); i++) {
+ 		bmode = &vvop_modes_builtin[i];
++		if (bmode->hdisplay != XRES_DEF || bmode->vdisplay != YRES_DEF ||
++		    drm_mode_vrefresh(bmode) != 30)
++			continue;
+ 
+ 		mode = drm_mode_duplicate(connector->dev, bmode);
+ 		if (!mode)
+@@ -399,13 +414,13 @@ static const struct drm_crtc_funcs vvop_crtc_funcs = {
+ };
+ 
+ static void vvop_crtc_atomic_enable(struct drm_crtc *crtc,
+-				    struct drm_crtc_state *old_state)
++				    struct drm_atomic_state *state)
+ {
+ 	drm_crtc_vblank_on(crtc);
+ }
+ 
+ static void vvop_crtc_atomic_disable(struct drm_crtc *crtc,
+-				     struct drm_crtc_state *old_state)
++				     struct drm_atomic_state *state)
+ {
+ 	unsigned long flags;
+ 
+@@ -421,7 +436,7 @@ static void vvop_crtc_atomic_disable(struct drm_crtc *crtc,
+ }
+ 
+ static void vvop_crtc_atomic_flush(struct drm_crtc *crtc,
+-				   struct drm_crtc_state *old_crtc_state)
++				   struct drm_atomic_state *state)
+ {
+ 	unsigned long flags;
+ 

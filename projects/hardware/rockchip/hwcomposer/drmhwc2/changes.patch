@@ -1,0 +1,81 @@
+diff --git a/include/drmplane.h b/include/drmplane.h
+index 92eb836..c24f1b2 100755
+--- a/include/drmplane.h
++++ b/include/drmplane.h
+@@ -546,22 +546,22 @@ class DrmPlane {
+   // next hdr
+   DrmProperty next_hdr_layer_type_property_;
+ 
+-  bool bReserved_;
+-  bool b_use_;
+-  bool b_yuv_;
+-  bool b_scale_;
+-  bool b_alpha_;
+-  bool b_hdr2sdr_;
+-  bool b_sdr2hdr_;
+-  bool b_afbdc_;
+-  bool b_afbc_prop_;
+-  uint64_t win_type_;
+-  const char *name_;
++  bool bReserved_=false;
++  bool b_use_=false;
++  bool b_yuv_=false;
++  bool b_scale_=false;
++  bool b_alpha_=false;
++  bool b_hdr2sdr_=false;
++  bool b_sdr2hdr_=false;
++  bool b_afbdc_=false;
++  bool b_afbc_prop_=false;
++  uint64_t win_type_=0;
++  const char *name_="unnamed";
+   uint32_t rotate_=0;
+-  int input_w_max_;
+-  int input_h_max_;
+-  int output_w_max_;
+-  int output_h_max_;
++  int input_w_max_=0;
++  int input_h_max_=0;
++  int output_w_max_=0;
++  int output_h_max_=0;
+   float scale_min_=0.0;
+   float scale_max_=0.0;
+ 
+diff --git a/rockchip/platform/rk356x/drmvop356x.cpp b/rockchip/platform/rk356x/drmvop356x.cpp
+index 03610e6..5c1ee1f 100644
+--- a/rockchip/platform/rk356x/drmvop356x.cpp
++++ b/rockchip/platform/rk356x/drmvop356x.cpp
+@@ -2824,6 +2824,34 @@ int Vop356x::TryGLESPolicy(
+   //save fb into tmp_layers
+   MoveFbToTmp(layers, fb_target);
+ 
++  // VVOP has a primary plane but no physical Cluster/Esmart/Smart resources.
++  // SurfaceFlinger renders the complete client target with the Mali GPU.
++  if (crtc->is_virtual_crtc()) {
++    ctx.state.bDisableFBAfbcd = true;
++    if (fb_target.size() == 1) {
++      DrmHwcLayer *fb = fb_target[0];
++      fb->bAfbcd_ = false;
++      for (auto *group : plane_groups) {
++        if (group->bUse || group->bReserved)
++          continue;
++        for (auto *plane : group->planes) {
++          if (!plane->is_use() && plane->GetCrtcSupported(*crtc) &&
++              plane->type() == DRM_PLANE_TYPE_PRIMARY) {
++            composition->emplace_back(DrmCompositionPlane::Type::kLayer,
++                                      plane, crtc, fb->iDrmZpos_);
++            composition->back().set_zpos(0);
++            fb->bMatch_ = true;
++            plane->set_use(true);
++            group->bUse = true;
++            ResetLayerFromTmp(layers, fb_target);
++            return 0;
++          }
++        }
++      }
++    }
++    ResetLayerFromTmp(layers, fb_target);
++    return -1;
++  }
+ 
+   if(fb_target.size()==1){
+     DrmHwcLayer* fb_layer = fb_target[0];

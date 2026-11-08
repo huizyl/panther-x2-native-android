@@ -1,0 +1,24 @@
+diff --git a/AndroidProducts.mk b/AndroidProducts.mk
+index f391652..f225792 100644
+--- a/AndroidProducts.mk
++++ b/AndroidProducts.mk
+@@ -38,3 +38,6 @@ COMMON_LUNCH_CHOICES := \
+ 
+ 
+ 
++
++PRODUCT_MAKEFILES += $(LOCAL_DIR)/rk3566_panther_x2/rk3566_panther_x2.mk
++COMMON_LUNCH_CHOICES += rk3566_panther_x2-userdebug
+diff --git a/device.mk b/device.mk
+index 2d427d5..118251d 100644
+--- a/device.mk
++++ b/device.mk
+@@ -72,7 +72,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
+                 ro.audio.monitorOrientation=true \
+                 debug.nfc.fw_download=false \
+                 debug.nfc.se=false \
+-                vendor.hwc.compose_policy=1 \
++                vendor.hwc.compose_policy?=1 \
+                 sys.wallpaper.rgb565=0 \
+                 sf.power.control=2073600 \
+                 sys.rkadb.root=0 \

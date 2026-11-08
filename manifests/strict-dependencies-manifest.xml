@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote name="panther-aosp14" fetch="https://android.googlesource.com" />
+  <!-- Google android-14.0.0_r27, required by the SDK's WMShellUnitTests. -->
+  <project name="platform/external/mockito-kotlin"
+           path="external/mockito-kotlin" remote="panther-aosp14"
+           revision="49ed4df5bc179ad48fbeac0e17cc27fb174f4abe" clone-depth="1" />
+</manifest>

@@ -1,0 +1,8 @@
+// Candidate only: not in PRODUCT_PACKAGES, original ROM provider retained.
+android_app_import {
+    name: "panther_webview_candidate",
+    product_specific: true,
+    default_dev_cert: true,
+    apk: "webview.apk",
+    required: ["libwebviewchromium_loader", "libwebviewchromium_plat_support"],
+}

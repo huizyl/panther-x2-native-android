@@ -1,0 +1,13 @@
+# Start authenticated LAN ADB after persistent storage is ready.
+on post-fs-data
+    setprop service.adb.tcp.port 5555
+    restart adbd
+
+# USB state changes must not leave this headless, LAN-managed device unreachable.
+on property:sys.boot_completed=1
+    setprop service.adb.tcp.port 5555
+    restart adbd
+
+on property:init.svc.adbd=stopped && property:sys.boot_completed=1 && property:persist.adb.tcp.port=5555
+    setprop service.adb.tcp.port 5555
+    start adbd

@@ -1,0 +1,67 @@
+{
+  "source_commit": "0ee07aa90b21e547c4a266145689104a7e26fe21",
+  "reason": "New empty placeholder SDK libraries backported by the vendor",
+  "api_compatibility_checks_enabled": true,
+  "files": [
+    {
+      "source": "packages/providers/MediaProvider/photopicker/framework/api/current.txt",
+      "sdk_path": "34/public/api/framework-photopicker.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/photopicker/framework/api/removed.txt",
+      "sdk_path": "34/public/api/framework-photopicker-removed.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/photopicker/framework/api/system-current.txt",
+      "sdk_path": "34/system/api/framework-photopicker.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/photopicker/framework/api/system-removed.txt",
+      "sdk_path": "34/system/api/framework-photopicker-removed.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/photopicker/framework/api/module-lib-current.txt",
+      "sdk_path": "34/module-lib/api/framework-photopicker.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/photopicker/framework/api/module-lib-removed.txt",
+      "sdk_path": "34/module-lib/api/framework-photopicker-removed.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/apex/pdf/framework/api/current.txt",
+      "sdk_path": "34/public/api/framework-pdf.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/apex/pdf/framework/api/removed.txt",
+      "sdk_path": "34/public/api/framework-pdf-removed.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/apex/pdf/framework/api/system-current.txt",
+      "sdk_path": "34/system/api/framework-pdf.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/apex/pdf/framework/api/system-removed.txt",
+      "sdk_path": "34/system/api/framework-pdf-removed.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/apex/pdf/framework/api/module-lib-current.txt",
+      "sdk_path": "34/module-lib/api/framework-pdf.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    },
+    {
+      "source": "packages/providers/MediaProvider/apex/pdf/framework/api/module-lib-removed.txt",
+      "sdk_path": "34/module-lib/api/framework-pdf-removed.txt",
+      "sha256": "39824f8c9fee1582598de5aa8cfa9653e84fbd69bd8aeb92c4a78c861faad552"
+    }
+  ]
+}

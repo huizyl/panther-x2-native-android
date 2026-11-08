@@ -1,0 +1,3 @@
+# This AOSP software process serves Gatekeeper plus ISharedSecret/gatekeeper.
+# The shared-secret interface belongs to the existing keymint server role.
+hal_server_domain(hal_gatekeeper_default, hal_keymint)

@@ -1,0 +1,11 @@
+<!-- The software Gatekeeper participates in KeyMint shared-secret negotiation. -->
+<compatibility-matrix version="1.0" type="framework">
+    <hal format="aidl" optional="true">
+        <name>android.hardware.security.sharedsecret</name>
+        <version>1</version>
+        <interface>
+            <name>ISharedSecret</name>
+            <instance>gatekeeper</instance>
+        </interface>
+    </hal>
+</compatibility-matrix>

@@ -1,0 +1,164 @@
+diff --git a/Android.bp b/Android.bp
+index a3fab20..26934a6 100644
+--- a/Android.bp
++++ b/Android.bp
+@@ -1,3 +1,28 @@
++
++// This physical product does not build Cuttlefish's optional router images.
++// Other products preserve the original module configuration.
++soong_config_module_type {
++    name: "rockchip_optional_openwrt_genrule",
++    module_type: "genrule",
++    config_namespace: "rockchip",
++    bool_variables: ["disable_openwrt_images"],
++    properties: ["enabled"],
++}
++soong_config_module_type {
++    name: "rockchip_optional_openwrt_prebuilt",
++    module_type: "prebuilt_etc_host",
++    config_namespace: "rockchip",
++    bool_variables: ["disable_openwrt_images"],
++    properties: ["enabled"],
++}
++soong_config_module_type {
++    name: "rockchip_optional_openwrt_combined_defaults",
++    module_type: "genrule_defaults",
++    config_namespace: "rockchip",
++    bool_variables: ["disable_openwrt_images"],
++    properties: ["tools"],
++}
++
+ package {
+     // See: http://go/android-license-faq
+     // A large-scale-change added 'default_applicable_licenses' to import
+@@ -43,7 +68,10 @@ genrule_defaults {
+     cmd: "cp $(in) $(genDir) && gzip -d $(genDir)/* && cp $(genDir)/* $(out)",
+ }
+ 
+-genrule {
++rockchip_optional_openwrt_genrule {
++    soong_config_variables: {
++        disable_openwrt_images: { enabled: false },
++    },
+     name: "openwrt_rootfs_base_x86_64",
+     srcs: [
+         "x86_64/images/openwrt-22.03.3-x86-64-generic-squashfs-rootfs.img.gz",
+@@ -52,7 +80,10 @@ genrule {
+     defaults: ["openwrt_rootfs_base_defaults"],
+ }
+ 
+-genrule {
++rockchip_optional_openwrt_genrule {
++    soong_config_variables: {
++        disable_openwrt_images: { enabled: false },
++    },
+     name: "openwrt_rootfs_base_aarch64",
+     srcs: [
+         "arm64/images/openwrt-22.03.3-armvirt-64-rootfs-squashfs.img.gz",
+@@ -86,7 +117,10 @@ genrule_defaults {
+          "$(location sload_f2fs) -f $(genDir)/root -t / $(out)",
+ }
+ 
+-genrule {
++rockchip_optional_openwrt_genrule {
++    soong_config_variables: {
++        disable_openwrt_images: { enabled: false },
++    },
+     name: "openwrt_rootfs_customization_x86_64",
+     srcs: [
+         "x86_64/kmods/*",
+@@ -97,7 +131,10 @@ genrule {
+     defaults: ["openwrt_rootfs_customization_defaults"],
+ }
+ 
+-genrule {
++rockchip_optional_openwrt_genrule {
++    soong_config_variables: {
++        disable_openwrt_images: { enabled: false },
++    },
+     name: "openwrt_rootfs_customization_aarch64",
+     srcs: [
+         "arm64/kmods/*",
+@@ -108,15 +145,20 @@ genrule {
+     defaults: ["openwrt_rootfs_customization_defaults"],
+ }
+ 
+-genrule_defaults {
++rockchip_optional_openwrt_combined_defaults {
+     name: "openwrt_rootfs_combined_defaults",
+-    tools: [
+-        "append_squashfs_overlay",
+-    ],
++    soong_config_variables: {
++        disable_openwrt_images: {
++            conditions_default: { tools: ["append_squashfs_overlay"] },
++        },
++    },
+     cmd: "$(location append_squashfs_overlay) $(in) $(out) -w",
+ }
+ 
+-genrule {
++rockchip_optional_openwrt_genrule {
++    soong_config_variables: {
++        disable_openwrt_images: { enabled: false },
++    },
+     name: "openwrt_rootfs_combined_x86_64",
+     srcs: [
+         ":openwrt_rootfs_base_x86_64",
+@@ -127,7 +169,10 @@ genrule {
+ 
+ }
+ 
+-genrule {
++rockchip_optional_openwrt_genrule {
++    soong_config_variables: {
++        disable_openwrt_images: { enabled: false },
++    },
+     name: "openwrt_rootfs_combined_aarch64",
+     srcs: [
+         ":openwrt_rootfs_base_aarch64",
+@@ -137,28 +182,40 @@ genrule {
+     defaults: ["openwrt_rootfs_combined_defaults"],
+ }
+ 
+-prebuilt_etc_host {
++rockchip_optional_openwrt_prebuilt {
++    soong_config_variables: {
++        disable_openwrt_images: { enabled: false },
++    },
+     name: "openwrt_rootfs_x86_64",
+     src: ":openwrt_rootfs_combined_x86_64",
+     sub_dir: "openwrt/images",
+     visibility: ["//device/google/cuttlefish/build"],
+ }
+ 
+-prebuilt_etc_host {
++rockchip_optional_openwrt_prebuilt {
++    soong_config_variables: {
++        disable_openwrt_images: { enabled: false },
++    },
+     name: "openwrt_rootfs_aarch64",
+     src: ":openwrt_rootfs_combined_aarch64",
+     sub_dir: "openwrt/images",
+     visibility: ["//device/google/cuttlefish/build"],
+ }
+ 
+-prebuilt_etc_host {
++rockchip_optional_openwrt_prebuilt {
++    soong_config_variables: {
++        disable_openwrt_images: { enabled: false },
++    },
+     name: "openwrt_kernel_x86_64",
+     src: "x86_64/images/openwrt-22.03.3-x86-64-generic-kernel.bin",
+     sub_dir: "openwrt/images",
+     visibility: ["//device/google/cuttlefish/build"],
+ }
+ 
+-prebuilt_etc_host {
++rockchip_optional_openwrt_prebuilt {
++    soong_config_variables: {
++        disable_openwrt_images: { enabled: false },
++    },
+     name: "openwrt_kernel_aarch64",
+     src: "arm64/images/openwrt-22.03.3-armvirt-64-Image",
+     sub_dir: "openwrt/images",

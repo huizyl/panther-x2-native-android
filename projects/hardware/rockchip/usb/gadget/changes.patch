@@ -1,0 +1,38 @@
+diff --git a/utils/MonitorFfs.cpp b/utils/MonitorFfs.cpp
+index 762d2c0..a189bfc 100644
+--- a/utils/MonitorFfs.cpp
++++ b/utils/MonitorFfs.cpp
+@@ -41,6 +41,13 @@ using ::std::literals::chrono_literals::operator""ms;
+ 
+ static volatile bool gadgetPullup;
+ 
++// A host-role DWC3 has no UDC. Keep monitoring FFS, but do not repeatedly
++// attempt a bind that the kernel cannot satisfy. A later device role is
++// still eligible once its UDC has actually registered.
++static bool isUdcAvailable(const std::string& gadget) {
++    return access(("/sys/class/udc/" + gadget).c_str(), F_OK) == 0;
++}
++
+ MonitorFfs::MonitorFfs(const char *const gadget)
+     : mWatchFd(),
+       mEndpointList(),
+@@ -153,7 +160,8 @@ void *MonitorFfs::startMonitorFd(void *param) {
+     // notify here if the endpoints are already present.
+     if (descriptorWritten) {
+         usleep(kPullUpDelay);
+-        if (WriteStringToFile(monitorFfs->mGadgetName, PULLUP_PATH)) {
++        if (isUdcAvailable(monitorFfs->mGadgetName) &&
++            WriteStringToFile(monitorFfs->mGadgetName, PULLUP_PATH)) {
+             std::lock_guard<std::mutex> lock(monitorFfs->mLock);
+             monitorFfs->mCurrentUsbFunctionsApplied = true;
+             monitorFfs->mCallback(monitorFfs->mCurrentUsbFunctionsApplied, monitorFfs->mPayload);
+@@ -210,7 +218,8 @@ void *MonitorFfs::startMonitorFd(void *param) {
+                             kPullUpDelay)
+                             usleep(kPullUpDelay);
+ 
+-                        if (WriteStringToFile(monitorFfs->mGadgetName, PULLUP_PATH)) {
++                        if (isUdcAvailable(monitorFfs->mGadgetName) &&
++                            WriteStringToFile(monitorFfs->mGadgetName, PULLUP_PATH)) {
+                             std::lock_guard<std::mutex> lock(monitorFfs->mLock);
+                             monitorFfs->mCurrentUsbFunctionsApplied = true;
+                             monitorFfs->mCallback(monitorFfs->mCurrentUsbFunctionsApplied,

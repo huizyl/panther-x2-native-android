@@ -1,0 +1,6 @@
+service vendor.gatekeeper_software /vendor/bin/hw/android.hardware.gatekeeper-service
+    class early_hal
+    user system
+    group system
+    interface aidl android.hardware.gatekeeper.IGatekeeper/default
+    interface aidl android.hardware.security.sharedsecret.ISharedSecret/gatekeeper

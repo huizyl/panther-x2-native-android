@@ -1,0 +1,254 @@
+diff --git a/system/gd/hci/hci_layer_fake.h b/system/gd/hci/hci_layer_fake.h
+index a2c3ea1..c16521b 100644
+--- a/system/gd/hci/hci_layer_fake.h
++++ b/system/gd/hci/hci_layer_fake.h
+@@ -42,6 +42,11 @@ class TestHciLayer : public HciLayer {
+ 
+   CommandView GetCommand();
+ 
++  bool HasPendingCommandForTesting() {
++    std::lock_guard<std::mutex> lock(mutex_);
++    return !command_queue_.empty();
++  }
++
+   void RegisterEventHandler(EventCode event_code, common::ContextualCallback<void(EventView)> event_handler) override;
+ 
+   void UnregisterEventHandler(EventCode event_code) override;
+diff --git a/system/gd/hci/le_scanning_manager.cc b/system/gd/hci/le_scanning_manager.cc
+index 7301d80..6e7fc26 100644
+--- a/system/gd/hci/le_scanning_manager.cc
++++ b/system/gd/hci/le_scanning_manager.cc
+@@ -15,9 +15,11 @@
+  */
+ #include "hci/le_scanning_manager.h"
+ 
++#include <chrono>
+ #include <memory>
+ #include <unordered_map>
+ 
++#include "common/bind.h"
+ #include "hci/acl_manager.h"
+ #include "hci/controller.h"
+ #include "hci/hci_layer.h"
+@@ -27,6 +29,7 @@
+ #include "hci/le_scanning_reassembler.h"
+ #include "hci/vendor_specific_event_manager.h"
+ #include "module.h"
++#include "os/alarm.h"
+ #include "os/handler.h"
+ #include "os/log.h"
+ #include "os/system_properties.h"
+@@ -178,6 +181,7 @@ struct LeScanningManager::impl : public LeAddressManagerCallback {
+       VendorSpecificEventManager* vendor_specific_event_manager,
+       storage::StorageModule* storage_module) {
+     module_handler_ = handler;
++    legacy_scan_retry_alarm_ = std::make_unique<os::Alarm>(handler);
+     hci_layer_ = hci_layer;
+     controller_ = controller;
+     acl_manager_ = acl_manager;
+@@ -225,6 +229,9 @@ struct LeScanningManager::impl : public LeAddressManagerCallback {
+   }
+ 
+   void stop() {
++    ++legacy_scan_generation_;
++    legacy_scan_retry_alarm_->Cancel();
++    legacy_scan_retry_alarm_.reset();
+     for (auto subevent_code : LeScanningEvents) {
+       hci_layer_->UnregisterLeEventHandler(subevent_code);
+     }
+@@ -542,6 +549,8 @@ struct LeScanningManager::impl : public LeAddressManagerCallback {
+   }
+ 
+   void scan(bool start) {
++    ++legacy_scan_generation_;
++    legacy_scan_retry_alarm_->Cancel();
+     if (start) {
+       configure_scan();
+       start_scan();
+@@ -562,6 +571,7 @@ struct LeScanningManager::impl : public LeAddressManagerCallback {
+       return;
+     }
+     is_scanning_ = true;
++    legacy_scan_busy_retries_ = 0;
+     if (!address_manager_registered_) {
+       le_address_manager_->Register(this);
+       address_manager_registered_ = true;
+@@ -576,14 +586,14 @@ struct LeScanningManager::impl : public LeAddressManagerCallback {
+         break;
+       case ScanApiType::ANDROID_HCI:
+       case ScanApiType::LEGACY:
+-        le_scanning_interface_->EnqueueCommand(
+-            LeSetScanEnableBuilder::Create(Enable::ENABLED, Enable::DISABLED /* filter duplicates */),
+-            module_handler_->BindOnce(impl::check_status));
++        enqueue_legacy_scan_enable();
+         break;
+     }
+   }
+ 
+   void stop_scan() {
++    ++legacy_scan_generation_;
++    legacy_scan_retry_alarm_->Cancel();
+     if (!is_scanning_) {
+       LOG_INFO("Scanning already stopped, return!");
+       return;
+@@ -606,6 +616,55 @@ struct LeScanningManager::impl : public LeAddressManagerCallback {
+     }
+   }
+ 
++  void enqueue_legacy_scan_enable() {
++    le_scanning_interface_->EnqueueCommand(
++        LeSetScanEnableBuilder::Create(Enable::ENABLED, Enable::DISABLED),
++        module_handler_->BindOnceOn(this, &impl::on_legacy_scan_enable_complete, legacy_scan_generation_));
++  }
++
++  void retry_legacy_scan(uint64_t generation) {
++    if (generation != legacy_scan_generation_ || !is_scanning_ || paused_) return;
++    enqueue_legacy_scan_enable();
++  }
++
++  void on_legacy_scan_enable_complete(uint64_t generation, CommandCompleteView view) {
++    auto status_view = LeSetScanEnableCompleteView::Create(view);
++    ASSERT(status_view.IsValid());
++    if (generation != legacy_scan_generation_ || !is_scanning_ || paused_) return;
++    const auto status = status_view.GetStatus();
++    if (status == ErrorCode::SUCCESS) {
++      legacy_scan_retry_alarm_->Cancel();
++      legacy_scan_busy_retries_ = 0;
++      return;
++    }
++    // Older dual-mode controllers reject LE scan enable during classic inquiry.
++    // Keep the requested scan alive until inquiry finishes; cancellation/pause
++    // invalidates queued callbacks and alarms so they cannot restart a stopped scan.
++    if (status == ErrorCode::COMMAND_DISALLOWED) {
++      if (legacy_scan_busy_retries_++ < kLegacyScanBusyMaxRetries) {
++        LOG_WARN("Legacy LE scan temporarily disallowed; retry %u/%u",
++                 legacy_scan_busy_retries_, kLegacyScanBusyMaxRetries);
++        // impl owns the alarm and cancels/destroys it before module teardown.
++        legacy_scan_retry_alarm_->Schedule(
++            common::BindOnce(&impl::retry_legacy_scan, common::Unretained(this), generation),
++            std::chrono::milliseconds(500));
++      } else {
++        LOG_ERROR("Legacy LE scan busy retry limit reached");
++        is_scanning_ = false;
++        scan_on_resume_ = false;
++        if (address_manager_registered_) {
++          le_address_manager_->Unregister(this);
++          address_manager_registered_ = false;
++        }
++        ++legacy_scan_generation_;
++        scanning_callbacks_->OnTimeout();
++      }
++      return;
++    }
++    ASSERT_LOG(status == ErrorCode::SUCCESS, "Receive set scan enable with error code %s",
++               ErrorCodeText(status).c_str());
++  }
++
+   void set_scan_parameters(ScannerId scanner_id, LeScanType scan_type, uint16_t scan_interval, uint16_t scan_window) {
+     uint32_t max_scan_interval = kLeScanIntervalMax;
+     uint32_t max_scan_window = kLeScanWindowMax;
+@@ -1631,6 +1690,10 @@ struct LeScanningManager::impl : public LeAddressManagerCallback {
+   ScanningCallback* scanning_callbacks_ = &null_scanning_callback_;
+   PeriodicSyncManager periodic_sync_manager_{&null_scanning_callback_};
+   std::vector<Scanner> scanners_;
++  static constexpr unsigned int kLegacyScanBusyMaxRetries = 32;
++  std::unique_ptr<os::Alarm> legacy_scan_retry_alarm_;
++  uint64_t legacy_scan_generation_ = 0;
++  unsigned int legacy_scan_busy_retries_ = 0;
+   bool is_scanning_ = false;
+   bool scan_on_resume_ = false;
+   bool paused_ = false;
+diff --git a/system/gd/hci/le_scanning_manager_test.cc b/system/gd/hci/le_scanning_manager_test.cc
+index cab04ac..ba619f3 100644
+--- a/system/gd/hci/le_scanning_manager_test.cc
++++ b/system/gd/hci/le_scanning_manager_test.cc
+@@ -27,6 +27,7 @@
+ #include <memory>
+ #include <mutex>
+ #include <queue>
++#include <thread>
+ #include <vector>
+ 
+ #include "hci/hci_layer_fake.h"
+@@ -37,6 +38,7 @@
+ #include "hci/hci_layer.h"
+ #include "hci/uuid.h"
+ #include "os/thread.h"
++#include "os/fake_timer/fake_timerfd.h"
+ #include "packet/raw_builder.h"
+ 
+ using ::testing::_;
+@@ -287,6 +289,7 @@ class LeScanningManagerTest : public ::testing::Test {
+       fake_registry_.SynchronizeModuleHandler(&LeScanningManager::Factory, std::chrono::milliseconds(20));
+     }
+     fake_registry_.StopAll();
++    os::fake_timer::fake_timerfd_reset();
+   }
+ 
+   void start_le_scanning_manager() {
+@@ -297,6 +300,12 @@ class LeScanningManagerTest : public ::testing::Test {
+     sync_client_handler();
+   }
+ 
++  void advance_scan_retry_timer(uint64_t milliseconds) {
++    sync_client_handler();
++    client_handler_->Post(common::BindOnce(os::fake_timer::fake_timerfd_advance, milliseconds));
++    sync_client_handler();
++  }
++
+   void sync_client_handler() {
+     ASSERT(thread_.GetReactor()->WaitForIdle(std::chrono::seconds(2)));
+   }
+@@ -362,6 +371,52 @@ TEST_F(LeScanningManagerTest, start_scan_test) {
+   test_hci_layer_->IncomingLeMetaEvent(LeAdvertisingReportBuilder::Create({report}));
+ }
+ 
++TEST_F(LeScanningManagerTest, legacy_scan_busy_then_success) {
++  start_le_scanning_manager();
++  le_scanning_manager->Scan(true);
++  ASSERT_EQ(OpCode::LE_SET_SCAN_PARAMETERS, test_hci_layer_->GetCommand().GetOpCode());
++  test_hci_layer_->IncomingEvent(LeSetScanParametersCompleteBuilder::Create(1, ErrorCode::SUCCESS));
++  ASSERT_EQ(OpCode::LE_SET_SCAN_ENABLE, test_hci_layer_->GetCommand().GetOpCode());
++  test_hci_layer_->IncomingEvent(LeSetScanEnableCompleteBuilder::Create(1, ErrorCode::COMMAND_DISALLOWED));
++  advance_scan_retry_timer(500);
++  ASSERT_EQ(OpCode::LE_SET_SCAN_ENABLE, test_hci_layer_->GetCommand().GetOpCode());
++  test_hci_layer_->IncomingEvent(LeSetScanEnableCompleteBuilder::Create(1, ErrorCode::SUCCESS));
++  EXPECT_CALL(mock_callbacks_, OnScanResult);
++  test_hci_layer_->IncomingLeMetaEvent(LeAdvertisingReportBuilder::Create({make_advertising_report()}));
++}
++
++TEST_F(LeScanningManagerTest, legacy_scan_cancel_while_busy_does_not_restart) {
++  start_le_scanning_manager();
++  le_scanning_manager->Scan(true);
++  ASSERT_EQ(OpCode::LE_SET_SCAN_PARAMETERS, test_hci_layer_->GetCommand().GetOpCode());
++  test_hci_layer_->IncomingEvent(LeSetScanParametersCompleteBuilder::Create(1, ErrorCode::SUCCESS));
++  ASSERT_EQ(OpCode::LE_SET_SCAN_ENABLE, test_hci_layer_->GetCommand().GetOpCode());
++  test_hci_layer_->IncomingEvent(LeSetScanEnableCompleteBuilder::Create(1, ErrorCode::COMMAND_DISALLOWED));
++  sync_client_handler();
++  le_scanning_manager->Scan(false);
++  auto disable = LeSetScanEnableView::Create(LeScanningCommandView::Create(test_hci_layer_->GetCommand()));
++  ASSERT_TRUE(disable.IsValid());
++  ASSERT_EQ(disable.GetLeScanEnable(), Enable::DISABLED);
++  test_hci_layer_->IncomingEvent(LeSetScanEnableCompleteBuilder::Create(1, ErrorCode::SUCCESS));
++  advance_scan_retry_timer(700);
++  EXPECT_FALSE(test_hci_layer_->HasPendingCommandForTesting());
++}
++
++TEST_F(LeScanningManagerTest, legacy_scan_busy_is_bounded_and_reports_timeout) {
++  start_le_scanning_manager();
++  le_scanning_manager->Scan(true);
++  ASSERT_EQ(OpCode::LE_SET_SCAN_PARAMETERS, test_hci_layer_->GetCommand().GetOpCode());
++  test_hci_layer_->IncomingEvent(LeSetScanParametersCompleteBuilder::Create(1, ErrorCode::SUCCESS));
++  EXPECT_CALL(mock_callbacks_, OnTimeout).Times(1);
++  for (unsigned int attempt = 0; attempt <= 32; ++attempt) {
++    ASSERT_EQ(OpCode::LE_SET_SCAN_ENABLE, test_hci_layer_->GetCommand().GetOpCode());
++    test_hci_layer_->IncomingEvent(LeSetScanEnableCompleteBuilder::Create(1, ErrorCode::COMMAND_DISALLOWED));
++    advance_scan_retry_timer(500);
++  }
++  advance_scan_retry_timer(700);
++  EXPECT_FALSE(test_hci_layer_->HasPendingCommandForTesting());
++}
++
+ TEST_F(LeScanningManagerTest, is_ad_type_filter_supported_false_test) {
+   start_le_scanning_manager();
+   ASSERT_TRUE(fake_registry_.IsStarted(&HciLayer::Factory));

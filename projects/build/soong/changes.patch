@@ -1,0 +1,24 @@
+diff --git a/cmd/soong_build/main.go b/cmd/soong_build/main.go
+index 2c35d76..0e44765 100644
+--- a/cmd/soong_build/main.go
++++ b/cmd/soong_build/main.go
+@@ -20,6 +20,7 @@ import (
+ 	"fmt"
+ 	"os"
+ 	"path/filepath"
++	"runtime/debug"
+ 	"strings"
+ 	"time"
+ 
+@@ -50,6 +51,11 @@ var (
+ )
+ 
+ func init() {
++	// Local builder heap budget, including VM swap for peak graph analysis.
++	// This affects the build tool only, never Android product configuration.
++	debug.SetMemoryLimit(6 << 30)
++	debug.SetGCPercent(20)
++
+ 	// Flags that make sense in every mode
+ 	flag.StringVar(&topDir, "top", "", "Top directory of the Android source tree")
+ 	flag.StringVar(&cmdlineArgs.SoongOutDir, "soong_out", "", "Soong output directory (usually $TOP/out/soong)")

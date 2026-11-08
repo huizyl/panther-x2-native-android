@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.img
+*.img.gz
+*.apk
+*.apex
+*.pk8
+*.pem
+adb-authorized/
+adbkey*
+authorized_keys
+userdata*
+metadata*
+.secrets/
